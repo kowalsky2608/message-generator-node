@@ -1,16 +1,15 @@
-const http = require('http')
+const express = require('express')
 const port = 3000
 
-const handler = (req,res) => {
-    console.log('action')
-    res.end('XDXD')
-}
-const server = http.createServer(handler)
 
-server.listen(port, (err) => {
+const app = express()
+app.set('view engine','hbs')
 
-    if (err) {
-        return console.log('Connect error')
-    }
-    console.log('server is running...')
+app.get('/', (req,res) => {
+    res.render('index')
 })
+app.get('/kontakt', (req,res) => {
+    res.send('dane node')
+})
+
+app.listen(port)

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dyspozycja</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header><h3>DispoSite</h3></header>
+    <main>
+      <div class="main-menu-content">
+        <div id="dates-choice-panel">
+          <label for="startDate">DATA ROZPOCZĘCIA</label><input type="date" name="startDate" id="startDate">
+          <label for="endDate">DATA ZAKOŃCZENIA</label><input type="date" name="endDate" id="endDate">
+          <button type="submit" onclick="showSelectedDates()" class="btn"><span>WYBIERZ</span></button>
+        </div>
+      </div>
+      <div class="table-container">
+        <div id="table-content">
+        </div>
+        <div id="message">
+
+        </div>
+      </div>
+    </main>  
+    <script src="messageScript.js"></script>
+  </body>
+</html>

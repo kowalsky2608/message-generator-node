@@ -9,17 +9,16 @@ function generateMessage(day,date,dys){ //Funkcja generująca zredagowaną wiado
 
  if(arrayLenght<7){
    alert("Uzupełnij wszystkie dni!")
+   return null;
  }
  else{
-
-  const message = document.getElementById('message')
   var messageToSend = "<h1>Twoja wiadomość:</h1>"
 
   messageToSend+="Przesyłam moją dyspozycję na okres "+date[0]+" - "+date[6]+"</br>"
   for(i=0;i<7;i++){messageToSend+=day[i]+" "+date[i]+" - "+dys[i]+"<br>"}
   messageToSend+="Michał Kowalski</br>"
 
-  message.innerHTML = messageToSend
+  return messageToSend;
  }
 }
 
@@ -60,38 +59,92 @@ function showSelectedDates() { //Funkcja wyświetlająca w tabeli dni wybrane pr
       start.setDate(start.getDate() + 1);
     }
     // Wyświetlamy wszystkie daty z tablicy w tabeli
-    var table = "<table><tr>"
-    for(let i = 0; i<dates.length;i++){
-          if(dates[i].getDate()<10&&dates[i].getMonth()<10){
-            table+="<td>0"+dates[i].getDate()+"."+"0"+(dates[i].getMonth()+1)+"</td>"
-            datesToMessage.push("0"+dates[i].getDate()+".0"+(dates[i].getMonth()+1))
-          }
-          else if(dates[i].getMonth()<10){
-            table+="<td>"+dates[i].getDate()+".0"+(dates[i].getMonth()+1)+"</td>"
-            datesToMessage.push(dates[i].getDate()+".0"+(dates[i].getMonth()+1))
-          }
-          else{
-            table+="<td>"+dates[i].getDate()+"."+(dates[i].getMonth()+1)+"</td>"
-            datesToMessage.push(dates[i].getDate()+"."+(dates[i].getMonth()+1))
-          }
-        }
-        table+="<tr>"
-      for(dayName=0; dayName<7; dayName++){table+="<td>"+week[dayName]+"</td>"}
-      table+="</tr>"
 
-      table+=("<tr class='shifts'>")
-      for(dayName=0; dayName<7; dayName++){
-      table+=("<td>")
-      for(i=0;i<zmiany.length;i++){table+="<button class='button-87' onclick='usrChoice(dyspo,zmiany["+i+"],"+dayName+")' type='button' id='"+week[dayName]+"' value='"+zmiany[i]+"'>"+zmiany[i]+"</button><br>"}
-      table+=("</td>")
-      }
-            
-      table+="<td><button class='button-87' type='button' onclick='generateMessage(week, datesToMessage, dyspo)'>Generuj</button></td></tr></table>"
+    // Kontener tabeli
+    const tableContainer = document.createElement('table');
+
+    // Wiersz dat
+    const datesTr = document.createElement('tr');
+    for (let i = 0; i<dates.length;i++) {
+      const date = dates[i].getDate().toString().padStart(2, '0') + "." + (dates[i].getMonth()+1).toString().padStart(2, '0');
+      const td = document.createElement('td');
+      td.innerHTML = date;
+      datesToMessage.push(date)
+      console.log(datesToMessage);
+      datesTr.appendChild(td);
+    }
+    tableContainer.appendChild(datesTr);
+
+    // Wiersz dni tygodnia
+    const daysTr = document.createElement('tr');
+    for (dayName=0; dayName<7; dayName++)
+    {
+      const td = document.createElement('td');
+      td.innerHTML = week[dayName];
+      daysTr.appendChild(td);
+    }
+    tableContainer.appendChild(daysTr);
       
-      if (tableContent) {
-        tableContent.innerHTML = table
-      } 
-    }   
+    
+    for(i=0;i<zmiany.length;i++){
+      const shitfsTr = document.createElement('tr');
+
+      for(dayName=0; dayName<7; dayName++) {
+        const dayShiftTr = document.createElement('td');
+      
+        const button = document.createElement('button');
+        button.classList.add('button-87');
+        button.classList.add('zmiana');
+        button.setAttribute('data-dayname', dayName);
+        button.setAttribute('data-zmiana', zmiany[i]);
+        button.type = 'button';
+        button.id = week[dayName];
+        button.value = zmiany[i];
+        button.innerHTML = zmiany[i];
+
+        dayShiftTr.appendChild(button);
+        shitfsTr.appendChild(dayShiftTr);
+      }
+
+      tableContainer.appendChild(shitfsTr);
+    }
+    const generateButtonTr = document.createElement('tr');
+    const generateButtonTd = document.createElement('td');
+    const generateButton = document.createElement('button');
+    generateButton.classList.add('button-87');
+    generateButton.type = 'button';
+    generateButton.innerHTML = 'Generuj';
+
+    generateButton.addEventListener('click', () => {
+      const message = generateMessage(week, datesToMessage, dyspo);
+
+      const messageContainer = document.querySelector('#message');
+
+      messageContainer.innerHTML = message;
+    })
+
+    generateButtonTd.appendChild(generateButton);
+    generateButtonTr.appendChild(generateButtonTd);
+    tableContainer.appendChild(generateButtonTr);
+      
+    if (tableContent) {
+      tableContent.appendChild(tableContainer);
+
+      document.querySelectorAll('.zmiana').forEach(bttn => {
+        const zmiana = bttn.getAttribute('data-zmiana');
+        const dayName = bttn.getAttribute('data-dayname');
+
+        bttn.addEventListener('click', () => {
+          document.querySelectorAll(`.zmiana[data-dayname="${dayName}"]`).forEach(bttns => {
+            bttns.classList.remove('selected')
+          })
+          bttn.classList.add('selected');
+          console.log(dyspo, zmiana, dayName);
+          usrChoice(dyspo, zmiana, dayName)
+        });
+      })
+    }
+  }   
 }
 
 // A R R A Y S
@@ -101,3 +154,10 @@ var zmiany = ['1 zmiana','2 zmiana','Off','C','MZ']
 var datesToMessage=[]
 var dyspo=[]
 var dates = [];
+
+const showShiftsTableBttn = document.querySelector('#showShiftsTable');
+if (showShiftsTableBttn) {
+  showShiftsTableBttn.addEventListener('click', () => {
+    showSelectedDates();
+  });
+}

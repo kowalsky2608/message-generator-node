@@ -99,6 +99,11 @@ table{
   touch-action: manipulation;
 }
 
+.zmiana.selected {
+  background-color: green;
+  color: #FFF;
+}
+
 .button-87:hover {
   background-position: right center;
   /* change the direction of the change here */

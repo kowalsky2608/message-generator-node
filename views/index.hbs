@@ -6,6 +6,7 @@
     <title>Dyspozycja</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
+    <script src="messageScript.js" defer></script>
   </head>
   <body>
     <header><h3>DispoSite</h3></header>
@@ -14,7 +15,7 @@
         <div id="dates-choice-panel">
           <label for="startDate">DATA ROZPOCZĘCIA</label><input type="date" name="startDate" id="startDate">
           <label for="endDate">DATA ZAKOŃCZENIA</label><input type="date" name="endDate" id="endDate">
-          <button type="submit" onclick="showSelectedDates()" class="btn"><span>WYBIERZ</span></button>
+          <button type="submit" id="showShiftsTable"class="btn"><span>WYBIERZ</span></button>
         </div>
       </div>
       <div class="table-container">
@@ -25,6 +26,5 @@
         </div>
       </div>
     </main>  
-    <script src="messageScript.js"></script>
   </body>
 </html>

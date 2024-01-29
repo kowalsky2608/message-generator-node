@@ -12,7 +12,7 @@ function generateMessage(day,date,dys){ //Funkcja generująca zredagowaną wiado
    return null;
  }
  else{
-  var messageToSend = "<h1>Twoja wiadomość:</h1>"
+  var messageToSend = "";
 
   messageToSend+="Przesyłam moją dyspozycję na okres "+date[0]+" - "+date[6]+"</br>"
   for(i=0;i<7;i++){messageToSend+=day[i]+" "+date[i]+" - "+dys[i]+"<br>"}
@@ -120,7 +120,28 @@ function showSelectedDates() { //Funkcja wyświetlająca w tabeli dni wybrane pr
 
       const messageContainer = document.querySelector('#message');
 
-      messageContainer.innerHTML = message;
+      messageContainer.innerHTML = "<h1>Twoja wiadomość:</h1>" + message;
+
+      const sendButton = document.createElement('button')
+      sendButton.innerHTML = 'Wyślij'
+
+      messageContainer.appendChild(sendButton)
+
+      sendButton.addEventListener('click', () => {
+        fetch('/wyslij-maila', {
+          method: 'POST',
+          body: message,
+          // body: { from: 'Michał Kowalski <email>', message: message },
+          headers: {
+            'Content-type': 'text/plain'
+            // 'Content-type': 'application/json'
+          }
+        })
+        .then(res => res.text())
+        // .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(err => console.error(err))
+      })
     })
 
     generateButtonTd.appendChild(generateButton);

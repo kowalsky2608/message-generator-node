@@ -45,9 +45,9 @@ app.post('/wyslij-maila', (req, res) =>{
         console.log(req.body);
 
         transporter.sendMail({
-            from: "Michał Kowalski <kowalsky2608@wp.pl>",
+            from: "You <yourmail@mail.com>",
             // from: req.body.from,
-            to: "kowalsky2608@gmail.com",
+            to: "recipientmail@mail.com",
             subject: "Dyspozycja",
             text: req.body,
             html: req.body,

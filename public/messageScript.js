@@ -16,7 +16,6 @@ function generateMessage(day,date,dys){ //Funkcja generująca zredagowaną wiado
 
   messageToSend+="Przesyłam moją dyspozycję na okres "+date[0]+" - "+date[6]+"</br>"
   for(i=0;i<7;i++){messageToSend+=day[i]+" "+date[i]+" - "+dys[i]+"<br>"}
-  messageToSend+="Michał Kowalski</br>"
 
   return messageToSend;
  }
@@ -123,6 +122,8 @@ function showSelectedDates() { //Funkcja wyświetlająca w tabeli dni wybrane pr
       messageContainer.innerHTML = "<h1>Twoja wiadomość:</h1>" + message;
 
       const sendButton = document.createElement('button')
+      sendButton.classList.add('btn');
+      sendButton.type = 'button';
       sendButton.innerHTML = 'Wyślij'
 
       messageContainer.appendChild(sendButton)
